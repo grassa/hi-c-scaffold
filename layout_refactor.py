@@ -417,7 +417,7 @@ for key in final_scaffolds:
       contig = path[i].split(':')[0]
       if contig[0] == 's':
         visited[contig] = True
-        actual_path = previous_scaffolds[int(contig.split('_')[1])]
+        actual_path = previous_scaffolds[contig]
         link_type = path[i].split(':')[0] + path[i].split(':')[1]
         if link_type == 'BE':
           continue
