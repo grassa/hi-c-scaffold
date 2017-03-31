@@ -9,9 +9,9 @@ def check(path):
 		for line in f:
 			attrs = line.split()
 			if float(attrs[4]) >= 1:
-				return True
-			else:
 				return False
+			else:
+				return True
 
 def main():
 	#bin=os.path.dirname(os.path.abspath(__file__))
@@ -98,9 +98,10 @@ def main():
 			sys.exit(1)
 
 	iter_num += 1
+
 	#now do iterative
 	while True:
-		if not os.path.isfile(args.output+'/scaffold_length_iteration_'+str(iter_num)+ ' > '+args.output+'/new_links_iteration_'+str(iter_num)):
+		if not os.path.isfile(args.output+'/new_links_iteration_'+str(iter_num)):
 			try:
 				cmd = 'python new_links.py -b '+ args.output+'/iteration_'+str(iter_num)+'.bed' + ' -c '+ args.output+'/RE_sites_iteration_'+str(iter_num)+ ' -l '+args.output+'/scaffold_length_iteration_'+str(iter_num)+ ' > '+args.output+'/new_links_iteration_'+str(iter_num)
 				log.write(cmd+'\n')
@@ -137,7 +138,7 @@ def main():
 
 		if not os.path.isfile(args.output+'/scaffolds_'+str(iter_num)+'.p'):
 			try:
-				cmd = 'python layout_refactor.py -p '+args.output+'/scaffolds_'+str(iter_num-1)+'.p ' + ' -l '+args.output+'/new_links_scaled_iteration_'+str(iter_num)+'_sorted -c '+args.cutoff+' -i '+str(iter_num)+ ' -s '+args.length + ' -g '+args.bed + ' -b '+args.output+'/iteration_'+str(iter_num+1)+'.bed -n '+args.output+'/scaffolds_'+str(iter_num)+'.p'
+				cmd = 'python layout_refactor.py -p '+args.output+'/scaffolds_'+str(iter_num-1)+'.p ' + ' -l '+args.output+'/new_links_scaled_iteration_'+str(iter_num)+'_sorted -c '+args.cutoff+' -i '+str(iter_num)+ ' -s '+args.output+'/scaffold_length_iteration_'+str(iter_num) + ' -g '+args.bed + ' -b '+args.output+'/iteration_'+str(iter_num+1)+'.bed -n '+args.output+'/scaffolds_'+str(iter_num)+'.p'
 				log.write(cmd+'\n')
 				p = subprocess.check_output(cmd,shell=True)
 
