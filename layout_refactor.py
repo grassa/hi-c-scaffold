@@ -15,7 +15,7 @@ parser.add_argument('-p','--map',help='Pickle map of scaffolds generated in prev
 parser.add_argument('-n','--nextmap',help='Pickle map of scaffolds generated in this iteration',required=False)
 parser.add_argument('-b','--bed', help='Output bed file for next iteration', required=False)
 parser.add_argument('-s','--size', help='Size of previous scaffolds/contigs', required=False)
-
+parser.add_argument('-f','--first', help='Original contig lengths', required=False)
 args = parser.parse_args()
 
 
@@ -42,6 +42,12 @@ G = nx.Graph()
 contigs = set()
 all_G = nx.Graph()
 contig_length = {}
+
+contig_lengths_original = {}
+with open(args.first,'r') as f:
+    for line in f:
+        attrs = line.split()
+        contig_lengths_original[attrs[0]] = int(attrs[1])
 
 OVl_G = nx.Graph()
 
@@ -171,7 +177,7 @@ def update_bed(scaffolds):
             contig_in_scaffolds[contig] = key
             scaffolds2offset[key][contig] = sum
             #offset[contig] = sum 
-            sum += contig_length[contig]
+            sum += contig_lengths_original[contig]
 
     with open(args.alignment,'r') as f:
         for line in f:
@@ -435,9 +441,9 @@ for key in final_scaffolds:
 
 #check scaffolds which were not scaffolded in this round but present in previous round
 for key in previous_scaffolds:
-    key1 = 'scaffold_'+str(key)
+    #key1 = 'scaffold_'+str(key)
     if key not in visited:
-        expanded_scaffold_paths[key1] = previous_scaffolds[key]
+        expanded_scaffold_paths[key] = previous_scaffolds[key]
 #write expanded scaffolds as pickle file
 pickle.dump(expanded_scaffold_paths,open(args.nextmap,'w'))
 #update bed file
