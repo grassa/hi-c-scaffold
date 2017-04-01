@@ -79,7 +79,7 @@ def main():
 
 	if not os.path.isfile(args.output+'/scaffolds_'+str(iter_num)+'.p'):
 		try:
-			cmd = 'python layout_refactor.py -x '+args.gfa + ' -l '+args.output+'/new_links_scaled_iteration_'+str(iter_num)+'_sorted -c '+args.cutoff+' -i '+str(iter_num)+ ' -s '+args.length + ' -g '+args.bed + ' -b '+args.output+'/iteration_'+str(iter_num+1)+'.bed -n '+args.output+'/scaffolds_'+str(iter_num)+'.p'
+			cmd = 'python layout_refactor.py -x '+args.gfa + ' -l '+args.output+'/new_links_scaled_iteration_'+str(iter_num)+'_sorted -f '+ args.length+' -c '+args.cutoff+' -i '+str(iter_num)+ ' -s '+args.length + ' -g '+args.bed + ' -b '+args.output+'/iteration_'+str(iter_num+1)+'.bed -n '+args.output+'/scaffolds_'+str(iter_num)+'.p'
 			log.write(cmd+'\n')
 			p = subprocess.check_output(cmd,shell=True)
 
@@ -138,7 +138,7 @@ def main():
 
 		if not os.path.isfile(args.output+'/scaffolds_'+str(iter_num)+'.p'):
 			try:
-				cmd = 'python layout_refactor.py -p '+args.output+'/scaffolds_'+str(iter_num-1)+'.p ' + ' -l '+args.output+'/new_links_scaled_iteration_'+str(iter_num)+'_sorted -c '+args.cutoff+' -i '+str(iter_num)+ ' -s '+args.output+'/scaffold_length_iteration_'+str(iter_num) + ' -g '+args.bed + ' -b '+args.output+'/iteration_'+str(iter_num+1)+'.bed -n '+args.output+'/scaffolds_'+str(iter_num)+'.p'
+				cmd = 'python layout_refactor.py -p '+args.output+'/scaffolds_'+str(iter_num-1)+'.p -f '+args.length + ' -l '+args.output+'/new_links_scaled_iteration_'+str(iter_num)+'_sorted -c '+args.cutoff+' -i '+str(iter_num)+ ' -s '+args.output+'/scaffold_length_iteration_'+str(iter_num) + ' -g '+args.bed + ' -b '+args.output+'/iteration_'+str(iter_num+1)+'.bed -n '+args.output+'/scaffolds_'+str(iter_num)+'.p'
 				log.write(cmd+'\n')
 				p = subprocess.check_output(cmd,shell=True)
 
@@ -148,7 +148,7 @@ def main():
 
 		if not os.path.isfile(args.output+'/RE_sites_iteration_'+str(iter_num+1)):
 			try:
-				cmd = 'python reconcile.py -p '+args.output+'/scaffolds_'+str(iter_num+1)+'.p -l '+args.length + ' -i '+str(iter_num+1) + ' -r '+args.output+'/RE_sites_iteration_1 -o '+args.output+'/scaffold_length_iteration_'+str(iter_num+1)+' -x '+args.output+'/RE_sites_iteration_'+str(iter_num+1)
+				cmd = 'python reconcile.py -p '+args.output+'/scaffolds_'+str(iter_num)+'.p -l '+args.length + ' -i '+str(iter_num+1) + ' -r '+args.output+'/RE_sites_iteration_1 -o '+args.output+'/scaffold_length_iteration_'+str(iter_num+1)+' -x '+args.output+'/RE_sites_iteration_'+str(iter_num+1)
 				log.write(cmd+'\n')
 				p = subprocess.check_output(cmd,shell=True)
 			except subprocess.CalledProcessError as err:
