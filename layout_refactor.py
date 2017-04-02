@@ -187,9 +187,9 @@ def update_bed(scaffolds):
                 offset  = scaffolds2offset[curr_scaf][attrs[0]]
                 start = int(attrs[1]) + offset
                 end = int(attrs[2]) + offset
-                ofile.write(curr_scaf+'\t'+str(start)+'\t'+str(end)+'\t'+str(attrs[3])+'\t0\t0\n')
+                ofile.write(curr_scaf+'\t'+str(start)+'\t'+str(end)+'\t'+str(attrs[3])+'n')
             else:
-                ofile.write(line)
+                ofile.write(attrs[0] + '\t' + attrs[1] + '\t'+attrs[2]+'\t'+attrs[3]+'\n')
 
     ofile.close()
 #Load the best score graph first, keep log of used and unused links
@@ -424,18 +424,19 @@ for key in final_scaffolds:
       if contig[0] == 's':
         visited[contig] = True
         actual_path = previous_scaffolds[contig]
-        link_type = path[i].split(':')[0] + path[i].split(':')[1]
-        if link_type == 'BE':
-          continue
-        else:
+
+        link_type = path[i].split(':')[1] + path[i+1].split(':')[1]
+        if link_type != 'BE':
           actual_path = actual_path[::-1]
 
-          for each in actual_path:
-              new_path.append(each)
+        for each in actual_path:
+          new_path.append(each)
       else:
           new_path.append(path[i])
           new_path.append(path[i+1])
 
+    if len(new_path) == 0:
+        print actual_path
     expanded_scaffold_paths['scaffold_'+str(key)] = new_path
 
 
@@ -443,11 +444,15 @@ for key in final_scaffolds:
 for key in previous_scaffolds:
     #key1 = 'scaffold_'+str(key)
     if key not in visited:
+        #print len(previous_scaffolds[key])
         expanded_scaffold_paths[key] = previous_scaffolds[key]
+
+# for key in expanded_scaffold_paths:
+#     print len(expanded_scaffold_paths[key])
 #write expanded scaffolds as pickle file
 pickle.dump(expanded_scaffold_paths,open(args.nextmap,'w'))
 #update bed file
-update_bed(expanded_scaffold_paths)
+#update_bed(expanded_scaffold_paths)
 
 
 #Now add scaffolds from previous iteration not seen in current iteration
