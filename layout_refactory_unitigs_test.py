@@ -12,7 +12,7 @@ parser.add_argument('-l','--links', help='Links sorted by relative score', requi
 parser.add_argument('-c','--cutoff', help='Minimum length contig to consider for scaffolding', required=False)
 parser.add_argument('-i','--iteration',help='Iteration number',required=False,default=1)
 parser.add_argument('-u','--unitigs',help='Bed file for unitig to contig tiline',required=False,default = 'abc')
-parser.add_argument('-t','--tenx',help='Links obtained from 10x file',required=False,default = 'abc')
+parser.add_argument('-t','--tenx',help='Links obtained from 10x file sorted by last column',required=False,default = 'abc')
 parser.add_argument('-d','--directory',help='Output Directory',required=False,default='out')
 args = parser.parse_args()
 
@@ -530,12 +530,6 @@ def generate_scaffold_graph():
                 contigs.add(c2)
     print >> sys.stderr,  'Finished loading Hi-C links, Loading unitig links now..'
 
-
-         
-
-
-
-
     '''
     Now try to add 10x and unitig links to the graph. Note that current preference is
     10x links first and then unitig tiling. 
@@ -592,8 +586,6 @@ Given a small contig, it finds best scaffold where small contig can go in
 
 def assign_small_to_seed(to_merge, seed_scaffolds):
     assignment = {}
-
-#print to_merge
 
     for contig in to_merge:
         max_sum = -1
